@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Audiencias y Archivos para Abogados</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar__logo">
+                <div class="logo-icon"><i class="ph-fill ph-scales"></i></div>
+                <h1>LexManager</h1>
+            </div>
+            <nav class="sidebar__nav">
+                <ul class="nav-list">
+                    <li class="nav-list__item active" data-target="dashboard"><i class="ph ph-squares-four"></i> Dashboard</li>
+                    <li class="nav-list__item" data-target="clientes"><i class="ph ph-users"></i> Clientes</li>
+                    <li class="nav-list__item" data-target="casos"><i class="ph ph-folder-open"></i> Casos</li>
+                    <li class="nav-list__item" data-target="audiencias"><i class="ph ph-gavel"></i> Audiencias</li>
+                    <li class="nav-list__item" data-target="documentos"><i class="ph ph-file-text"></i> Documentos</li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h2 id="current-section-title">Dashboard</h2>
+                <div class="header__user">
+                    <div class="user-avatar"><i class="ph ph-user"></i></div>
+                    <span>Abogado Admin</span>
+                </div>
+            </header>
+
+            <div class="alerts-container" id="alerts-container"></div>
+
+            <div class="views-container">
+                <!-- Dashboard View -->
+                <section id="view-dashboard" class="view view--active">
+                    <div class="dashboard-stats">
+                        <div class="stat-card stat-card--blue">
+                            <div class="stat-card__icon"><i class="ph ph-users-three"></i></div>
+                            <div class="stat-card__content">
+                                <h3>Total Clientes</h3>
+                                <p id="stat-clientes">0</p>
+                            </div>
+                            <div class="stat-card__bg-icon"><i class="ph-fill ph-users-three"></i></div>
+                        </div>
+                        <div class="stat-card stat-card--green">
+                            <div class="stat-card__icon"><i class="ph ph-briefcase"></i></div>
+                            <div class="stat-card__content">
+                                <h3>Casos Activos</h3>
+                                <p id="stat-casos">0</p>
+                            </div>
+                            <div class="stat-card__bg-icon"><i class="ph-fill ph-briefcase"></i></div>
+                        </div>
+                        <div class="stat-card stat-card--orange">
+                            <div class="stat-card__icon"><i class="ph ph-calendar-blank"></i></div>
+                            <div class="stat-card__content">
+                                <h3>Próximas Audiencias</h3>
+                                <p id="stat-audiencias">0</p>
+                            </div>
+                            <div class="stat-card__bg-icon"><i class="ph-fill ph-calendar-blank"></i></div>
+                        </div>
+                    </div>
+                    <div class="dashboard-recent">
+                        <h3>Audiencias Pendientes</h3>
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th>Caso</th>
+                                        <th>Tipo</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboard-audiencias-list">
+                                    <!-- Audiencias list -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Clientes View -->
+                <section id="view-clientes" class="view">
+                    <div class="view-header">
+                        <button class="btn btn--primary" id="btn-new-cliente">
+                            <i class="ph ph-plus"></i> Nuevo Cliente
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Foto</th>
+                                    <th>Nombre</th>
+                                    <th>DNI</th>
+                                    <th>Contacto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientes-list">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Casos View -->
+                <section id="view-casos" class="view">
+                    <div class="view-header">
+                        <button class="btn btn--primary" id="btn-new-caso">
+                            <i class="ph ph-plus"></i> Nuevo Caso
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Cliente</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="casos-list">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Audiencias View -->
+                <section id="view-audiencias" class="view">
+                    <div class="view-header">
+                        <button class="btn btn--primary" id="btn-new-audiencia">
+                            <i class="ph ph-plus"></i> Nueva Audiencia
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha y Hora</th>
+                                    <th>Caso</th>
+                                    <th>Lugar</th>
+                                    <th>Tipo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audiencias-list">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Documentos View -->
+                <section id="view-documentos" class="view">
+                    <div class="view-header">
+                        <button class="btn btn--primary" id="btn-new-documento">
+                            <i class="ph ph-upload-simple"></i> Subir Documento
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Caso</th>
+                                    <th>Fecha Subida</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="documentos-list">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Modal Cliente -->
+    <div class="modal" id="modal-cliente">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 id="modal-cliente-title">Nuevo Cliente</h3>
+                <button class="btn-close js-modal-close">&times;</button>
+            </div>
+            <form id="form-cliente" class="form">
+                <input type="hidden" id="cliente-id">
+                <div class="form__group">
+                    <label for="cliente-foto">Foto (Opcional)</label>
+                    <input type="file" id="cliente-foto" accept="image/*">
+                </div>
+                <div class="form__group">
+                    <label for="cliente-nombre">Nombre Completo</label>
+                    <input type="text" id="cliente-nombre" required>
+                </div>
+                <div class="form__group">
+                    <label for="cliente-dni">DNI</label>
+                    <input type="text" id="cliente-dni" required>
+                </div>
+                <div class="form__group">
+                    <label for="cliente-contacto">Contacto (Tel/Email)</label>
+                    <input type="text" id="cliente-contacto" required>
+                </div>
+                <div class="modal__footer">
+                    <button type="button" class="btn btn--secondary js-modal-close">Cancelar</button>
+                    <button type="submit" class="btn btn--primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Caso -->
+    <div class="modal" id="modal-caso">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 id="modal-caso-title">Nuevo Caso</h3>
+                <button class="btn-close js-modal-close">&times;</button>
+            </div>
+            <form id="form-caso" class="form">
+                <input type="hidden" id="caso-id">
+                <div class="form__group">
+                    <label for="caso-titulo">Título del Caso</label>
+                    <input type="text" id="caso-titulo" required>
+                </div>
+                <div class="form__group">
+                    <label for="caso-cliente">Cliente</label>
+                    <select id="caso-cliente" required></select>
+                </div>
+                <div class="form__group">
+                    <label for="caso-descripcion">Descripción</label>
+                    <textarea id="caso-descripcion" rows="3"></textarea>
+                </div>
+                <div class="form__group">
+                    <label for="caso-estado">Estado</label>
+                    <select id="caso-estado">
+                        <option value="Abierto">Abierto</option>
+                        <option value="En proceso">En proceso</option>
+                        <option value="Cerrado">Cerrado</option>
+                    </select>
+                </div>
+                <div class="modal__footer">
+                    <button type="button" class="btn btn--secondary js-modal-close">Cancelar</button>
+                    <button type="submit" class="btn btn--primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Audiencia -->
+    <div class="modal" id="modal-audiencia">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 id="modal-audiencia-title">Nueva Audiencia</h3>
+                <button class="btn-close js-modal-close">&times;</button>
+            </div>
+            <form id="form-audiencia" class="form">
+                <input type="hidden" id="audiencia-id">
+                <div class="form__group">
+                    <label for="audiencia-caso">Caso</label>
+                    <select id="audiencia-caso" required></select>
+                </div>
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="audiencia-fecha">Fecha</label>
+                        <input type="date" id="audiencia-fecha" required>
+                    </div>
+                    <div class="form__group">
+                        <label for="audiencia-hora">Hora</label>
+                        <input type="time" id="audiencia-hora" required>
+                    </div>
+                </div>
+                <div class="form__group">
+                    <label for="audiencia-lugar">Lugar</label>
+                    <input type="text" id="audiencia-lugar" required>
+                </div>
+                <div class="form__group">
+                    <label for="audiencia-tipo">Tipo (Civil, Penal, etc.)</label>
+                    <input type="text" id="audiencia-tipo" required>
+                </div>
+                <div class="form__group">
+                    <label for="audiencia-estado">Estado</label>
+                    <select id="audiencia-estado">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Realizada">Realizada</option>
+                        <option value="Cancelada">Cancelada</option>
+                    </select>
+                </div>
+                <div class="modal__footer">
+                    <button type="button" class="btn btn--secondary js-modal-close">Cancelar</button>
+                    <button type="submit" class="btn btn--primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Documento -->
+    <div class="modal" id="modal-documento">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 id="modal-documento-title">Subir Documento</h3>
+                <button class="btn-close js-modal-close">&times;</button>
+            </div>
+            <form id="form-documento" class="form">
+                <input type="hidden" id="documento-id">
+                <div class="form__group">
+                    <label for="documento-caso">Caso Asociado</label>
+                    <select id="documento-caso" required></select>
+                </div>
+                <div class="form__group">
+                    <label for="documento-nombre">Nombre del Documento</label>
+                    <input type="text" id="documento-nombre" required>
+                </div>
+                <div class="form__group">
+                    <label for="documento-archivo">Archivo (Simulado)</label>
+                    <input type="file" id="documento-archivo" required>
+                </div>
+                <div class="modal__footer">
+                    <button type="button" class="btn btn--secondary js-modal-close">Cancelar</button>
+                    <button type="submit" class="btn btn--primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Detalle Caso -->
+    <div class="modal" id="modal-detalle-caso">
+        <div class="modal__content modal__content--large">
+            <div class="modal__header">
+                <h3>Detalle del Caso</h3>
+                <button class="btn-close js-modal-close">&times;</button>
+            </div>
+            <div class="detalle-caso" id="detalle-caso-content">
+                <!-- Se llenará dinámicamente -->
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn btn--secondary js-modal-close">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
